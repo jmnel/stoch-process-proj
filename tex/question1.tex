@@ -6,7 +6,15 @@
 
 \include{common}
 
+\usepackage{titlesec}
+
+\title{{\bf Metropolis-Hastings Project\\Math 4430}\\\vspace{10pt}
+    Jacques Nel - Nick Rooney - Steven Wong
+}
+
 \begin{document}
+
+\maketitle
 
 \section*{Task 1}
 
@@ -21,7 +29,7 @@ $$
 \mu_iP_{ij} = \mu_jP_{ji}
 $$
 
-In the case $i=j$ this is trivial. Otherwise if $i!=j$,
+In the case $i=j$ this is trivial. Otherwise if $i \neq j$,
 
 $$
 \mu_i P_{ij} = \mu_iq_{ij} \min\left\lbrace1, \frac{\mu_j}{\mu_i}\right\rbrace
@@ -65,9 +73,24 @@ $\forall i,j\in\mathcal{S}$ $i\longrightarrow j$.\\
 $p_{ij} > 0$.\\
 
 Suppose that $\mu$ is not perfectly uniform, then w.l.g. there exists an $l,i\in\mathcal{S}$
-such that $\frac{\mu_l}{\mu_i} < 1$, and $p_{ii} > 0$. Then the period of state $i$ is 1, but
+such that $\frac{\mu_l}{\mu_i} < 1$.\\
+
+If this is true, then one term of the sum
+
+$$
+\sum_{k\neq i} q_{ik} \min\left\lbrace 1, \frac{\mu_k}{\mu_i} \right\rbrace
+$$
+
+is smaller, ie. $q_{il} \frac{\mu_l}{\mu_i} < q_{il}$, so we have
+
+$$
+p_{ij} = 1 - \sum_{k\neq i} q_{ik} \min\left\lbrace 1, \frac{\mu_k}{\mu_i}\right\rbrace
+> 0.
+$$
+
+Then the period of state $i$ is 1, but
 since $P$ is irreducible, it has only one class, so the period of $P$ must be $\gcd\lbrace 1,\ldots\rbrace = 1$.
-So $P$ is aperiodic $\square$.
+So $P$ is aperiodic $\quad\square$.
 
 \section*{Task 3}
 
@@ -100,28 +123,47 @@ q_{ii} = \frac{f}{\binom{20}{2}}.
 $$
 
 When a state $x_i$ has more forbidden neighbors, the probability of remaining in state $x_i$ increases
-proportionaly. The effect of this is that $q_{ij} = \frac{1}{190}$ for all $i,j\in \mathcal{S}$ where $K$ is a constant,
-and that implies
+proportionally. The effect of this is that $q_{ij} = \frac{1}{190}$ for all $i,j\in \mathcal{S}$ where $K$ is a constant,
+and that implies $q_{ij} = q_{ji}\quad\square$.
+
+\newpage
+
+\section*{Task 4-Our implementation}
+
+Please refer to \cref{code} for our implementation of the Metropolis-Hastings algorithm so to
+estimate the expectation of the total tour length of all tours in $\mathcal{S}$.\\
+
+We begin by enumerating the pairs (edges) between all 20 cites. On a complete graph,
+there would be $\binom{20}{2}=190$ edges, but we randomly forbid and store 5 of the 190 edges.\\
+
+The following connections are banned:
 
 $$
-q_{ij} = q_{ji}\quad\square.
+0 \not\leftrightarrow 18
+\quad\quad
+1 \not\leftrightarrow 7
+\quad\quad
+1 \not\leftrightarrow 10
+\quad\quad
+1 \not\leftrightarrow 19
+\quad\quad
+9 \not\leftrightarrow 17
 $$
 
+Next, we randomly sample distances from a gamma distribution with $k=7.5$. A convenience function
+is created to check if a candidate state $x'$ is feasible, it simply compares all edges in a tour
+with the set of forbidden edges.\\
 
-%The Markov chain $P$ is irreducible if $i\longrightarrow j$ $\forall i,j\in\mathcal{S}$. First, we must show
-%that if $i\longrightarrow j$ under $Q$, then $i\longrightarrow j$ under $P$.
+Finally, the function \texttt{mcmc} performs the Metropolis-Hastings algorithm. An initial
+burn-in of length $n$ is performed, then the chain is sampled $m$ times. In practice we used
 
-%There are 2 cases to consider:
+$$
+n = 10^5\quad\quad\text{and}\quad\quad m = 10^6.
+$$
 
-%\begin{itemize}
-%    \item If $u_j \geq u_i$ as $i\longrightarrow j$, then we always accept the move; 
-%        the probability is always 1. $p_{ij} = p{ji}$. This holds because if $q_{ij}$ is symmetric
-%        then $q_{ij}=q_{ji}$, then \exists
-%\end{itemize}
-
-
-
-\section{Results}
+This process was repeated several times to show the convergence of the estimated expected
+total distance
+$E\left[ f(x) \right]$ as is shown in \cref{fig:conv}.
 
 \begin{figure}[h]
     \center
@@ -133,17 +175,18 @@ $$
 \begin{figure}[h]
     \center
     \caption{Several runs of Metropolis-Hastings algorithm $n=10^{6}$ and $m=10^{4}$}
+    \label{fig:conv}
     \includegraphics[scale=0.8]{../src/fig2.pdf}
     \footnotesize
     \vspace{10pt}
 
-    \Cref{fig:12} shows the convergence of the MCMC. The burn-in phase is not depicted.
+    \Cref{fig:conv} shows the convergence of the MCMC. The burn-in phase is not depicted.
 \end{figure}
 
 \begin{table}[h]
     \center
     \caption{Results of 10 runs of Metropolis-Hastings algorithm}
-    \label{fig:12}
+    \label{fig:results}
     \begin{tabular}{rl}
         Run & $E\left[ f(x) \right]$ estimate \\
         \hline
@@ -183,7 +226,7 @@ $$
     \vspace{10pt}
     \footnotesize
     \Cref{table:distances} shows distances on between the 185 pairs of 20 cities.
-    Disntances are generated randomly from a gamma distribution. Refer to \cref{code} for details.
+    Distances are generated randomly from a gamma distribution. Refer to \cref{code} for details.
 \end{table}
 
 \newpage

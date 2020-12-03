@@ -10,44 +10,38 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
-# mpl.use('module://matplotlib-backend-kitty')
 mpl.use('Agg')
 import scipy.stats.distributions as distributions
 
 DATA_PATH = Path(__file__).absolute().parents[1] / 'data' / 'data.pkl'
-# random.seed(0)
-# np.random.seed(0)
 
+# Make results reproducible.
 random.seed(0)
+np.random.seed(0)
 
 n_cities = 20
 n_ban = 5
+
+# Enumerate edges between pairs of cities.
 pairs = {frozenset([i, j]) for i in range(n_cities) for j in range(i + 1, n_cities) if i != j}
 
-gamma = distributions.gamma(a=7.5)
 bans = random.sample(pairs, n_ban)
 
-print(bans)
 
-print({7, 13} in bans)
-exit()
-
+# Define and plot gamma distribution.
+gamma = distributions.gamma(a=7.5)
 fig, ax = plt.subplots(1)
-
 x = np.linspace(0, 25, 100)
 z = gamma.pdf(x)
 ax.plot(x, z)
 ax.set_xlabel('Distance')
 ax.set_ylabel('Probability')
 fig.savefig('fig1.pdf', dpi=200)
-# plt.show()
-# exit()
 
+# Randomly sample distances for each edge.
 distances = {p: gamma.rvs() for p in pairs.difference(bans)}
 
-# pprint(distances)
-# pprint(bans)
-
+# Create LaTeX table for distances.
 with open('table1-1.tex', 'wt') as fh:
 
     vals = list((i, j, d) for (i, j), d in distances.items())
@@ -59,6 +53,7 @@ with open('table1-1.tex', 'wt') as fh:
         row_s = row.format(*vals[i], *vals[i + 37], *vals[i + 2 * 37], *vals[i + 3 * 37], *vals[i + 4 * 37])
         fh.write(row_s)
 
+# Create LaTeX table for forbidden eges.
 with open('table1-2.tex', 'wt') as fh:
 
     vals = list((i, j) for (i, j) in bans)
