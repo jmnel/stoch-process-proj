@@ -1,0 +1,106 @@
+% ------------------
+% -- Assignment 1 --
+% -- Math 6904 -----
+
+\documentclass[6pt,oneside]{article}
+
+\include{common}
+
+\begin{document}
+
+\section{1}
+
+Write out a proof that $P$ is reversible with respect to $\mu$. Conclude that $\mu$ is an invariant
+probability distribution for $P$.
+
+\section{2}
+
+Write out a proof that $P$ is irreducible, and that if $\mu$ isn't perfectly uniform, then $P$ is aperiodic.
+\emph{[Hint: show that if $i\longrightarrow j$ under $Q$, then $i\longrightarrow j$ under $P$.
+For aperiodicity, consider a site where a transition could be rejected.]}
+
+Therefore, if you pick any state to start in and run the chain for a long time $n$ then the random
+variable $X_n$ will be sampled from apximately the distribution $\mu$. Going further, $X_n,X_{n+1},
+ldots, X_{n+m}$ will all have distributions approximately $\mu$. They won't be indepdendent, but
+if $m$ is also large, then we can still show that
+
+$$
+\sum_i f(i)\mu_i \approx \frac{1}{m+1} \sum_{k=0}^m f(X_k).
+$$
+
+So expectations, with respect to the distribution $\mu$ can be worked out this way. This often works well in
+practice, event though it is sometimes hard to get rigorous bounds on how large $n$ and $m$ must be for answers
+to be reliable.
+
+\vspace{10pt}
+
+The Markov chain $P$ is irreducible if $i\longrightarrow j$ $\forall i,j\in\mathcal{S}$. First, we must show
+that if $i\longrightarrow j$ under $Q$, then $i\longrightarrow j$ under $P$.
+
+There are 2 cases to consider:
+
+\begin{itemize}
+    \item If $u_j \geq u_i$ as $i\longrightarrow j$, then we always accept the move; the probability is always 1.
+\end{itemize}
+
+\section{Results}
+
+\begin{figure}[h]
+    \center
+    \caption{$l(i,j) \sim \mathrm{Gamma}(k=7.5)$}
+    \includegraphics[scale=0.8]{../src/fig1.pdf}
+\end{figure}
+
+
+\begin{figure}[h]
+    \center
+    \caption{Several runs of Metropolis-Hastings algorithm $n=10^{6}$ and $m=10^{4}$}
+    \includegraphics[scale=0.8]{../src/fig2.pdf}
+    \footnotesize
+    \vspace{10pt}
+
+    \Cref{fig:12} shows the convergence of the MCMC. The burn-in phase is not depicted.
+\end{figure}
+
+\begin{table}[h]
+    \center
+    \caption{Results of 10 runs of Metropolis-Hastings algorithm}
+    \label{fig:12}
+    \begin{tabular}{rl}
+        Run & $E\left[ f(x) \right]$ estimate \\
+        \hline
+        1 & 151.7582975592603 \\
+        2 & 151.78521559558445 \\
+        3 & 151.71995644022766 \\
+        4 & 151.72257839116807 \\
+        5 & 151.7989403512341 \\
+        6 & 151.77048793781816 \\
+        7 & 151.73434402770206 \\
+        8 & 151.7712540561242 \\
+        9 & 151.723880973142 \\
+        10 & 151.7255789619957 \\
+    \end{tabular}
+\end{table}
+
+\clearpage
+
+\section*{Appendix}
+
+\begin{table}[h]
+    \center
+    \caption{Distances between pairs of cities $(i,j)$ for $i,j \in \left\lbrace 0, 9\right\rbrace$ and $i\neq j$}
+    \label{table:distances}
+    \footnotesize
+    \begin{tabular}{ccc|ccc|ccc|ccc|ccc}
+        $i$ & $j$ & $ l(i, j)$ &
+        $i$ & $j$ & $ l(i, j)$ &
+        $i$ & $j$ & $ l(i, j)$ &
+        $i$ & $j$ & $ l(i, j)$ &
+        $i$ & $j$ & $ l(i, j)$
+        \\
+        \hline
+\input{../src/table1-1}
+    \end{tabular}
+\end{table}
+
+\end{document}

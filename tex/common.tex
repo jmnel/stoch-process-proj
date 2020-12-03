@@ -1,0 +1,87 @@
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{adjustbox}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{mathrsfs}
+\usepackage{anyfontsize}
+\usepackage[driver=pdftex]{geometry}
+\usepackage{import}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{setspace}
+\usepackage[utf8]{inputenc}
+\usepackage{listingsutf8}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\fontsize{8}{10}\selectfont\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=t,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    literate={Δ}{$\Delta$}1 
+    {₀}{{$_0$}}1 
+    {α}{{$\alpha$}}1 
+    {γ}{{$\gamma$}}1 
+    {ρ}{{$\rho$}}1 
+    {σ}{{$\sigma$}}1 
+    {ₒ}{{$_o$}}1 
+    {₁}{{$_1$}}1
+    {ᵣ}{{$_r$}}1 
+    {ₑ}{{$_e$}}1 
+    {₂}{{$_2$}}1 
+    {₃}{{$_3$}}1 
+}
+\lstset{style=mystyle}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{proof}{Proof}
+ 
+
+\newcommand{\Real}{\mathbb{R}}
+\newcommand{\Int}{\mathbb{Z}}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\Complex}{\mathbb{C}}
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\diag}[1]{\mathrm{diag}{#1}}
+\newcommand{\Binom}[2]{\mathrm{Binomial}\left(#1,#2\right)}
+\newcommand{\prob}[1]{\mathcal{P}\left(#1\right)}
+\newcommand{\E}[1]{\mathcal{E}\left(#1\right)}
+\newcommand{\set}{\leftarrow}
+\renewcommand{\mod}[1]{\mathrm{mod}\;{#1}}
+
+\renewcommand{\Re}[1]{\mathfrak{Re}\left\lbrace{#1}\right\rbrace}
+\renewcommand{\Im}[1]{\mathfrak{Im}\left\lbrace{#1}\right\rbrace}
+
+\makeatletter
+\newcommand{\nosemic}{\renewcommand{\@endalgocfline}{\relax}}% Drop semi-colon ;
+\newcommand{\dosemic}{\renewcommand{\@endalgocfline}{\algocf@endline}}% Reinstate semi-colon ;
+\newcommand{\pushline}{\Indp}% Indent
+\newcommand{\popline}{\Indm\dosemic}% Undent
+\makeatother
+
+\SetKwComment{Comment}{$\triangleright$\ }{}
