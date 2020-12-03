@@ -179,8 +179,15 @@ $$
         \hline
 \input{../src/table1-1}
     \end{tabular}
+
+    \vspace{10pt}
+    \footnotesize
+    \Cref{table:distances} shows distances on between the 185 pairs of 20 cities.
+    Disntances are generated randomly from a gamma distribution. Refer to \cref{code} for details.
 \end{table}
 
-\lstinputlisting[language=Python]{../src/tour2.py}
+\newpage
+
+\lstinputlisting[language=Python,captionpos=t,caption=Traveling Salesperson with MCMC,label=code]{../src/tour2.py}
 
 \end{document}
