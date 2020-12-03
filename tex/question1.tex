@@ -8,40 +8,118 @@
 
 \begin{document}
 
-\section{1}
+\section*{Task 1}
 
 Write out a proof that $P$ is reversible with respect to $\mu$. Conclude that $\mu$ is an invariant
 probability distribution for $P$.
 
-\section{2}
+\vspace{10pt}
+
+To show that $P$ is reversible with respect to $\mu$, we must show that
+
+$$
+\mu_iP_{ij} = \mu_jP_{ji}
+$$
+
+In the case $i=j$ this is trivial. Otherwise if $i!=j$,
+
+$$
+\mu_i P_{ij} = \mu_iq_{ij} \min\left\lbrace1, \frac{\mu_j}{\mu_i}\right\rbrace
+= q_{ij} \min \left\lbrace \mu_i, \mu_j \right\rbrace
+$$
+
+and similiarly
+
+$$
+\mu_j P_{ji} = \mu_j q_{ji} \min\left\lbrace 1, \frac{\mu_i}{\mu_j}\right\rbrace
+=
+q_{ji}\min\left\lbrace \mu_j, \mu_i\right\rbrace
+$$
+
+If a probability mass function $\mu_i$ satisfies the above, then it is invariant, because
+$\forall j, \pi_j=\sum_i \pi_i P_{ij}$
+
+$$
+\sum_i \pi_i P_{ij} = \sum_i \pi_j P_{ji} = \pi_j \sum_i P_{ji} = \pi_j
+\quad\square.
+$$
+
+\section*{Task 2}
 
 Write out a proof that $P$ is irreducible, and that if $\mu$ isn't perfectly uniform, then $P$ is aperiodic.
 \emph{[Hint: show that if $i\longrightarrow j$ under $Q$, then $i\longrightarrow j$ under $P$.
 For aperiodicity, consider a site where a transition could be rejected.]}
 
-Therefore, if you pick any state to start in and run the chain for a long time $n$ then the random
-variable $X_n$ will be sampled from apximately the distribution $\mu$. Going further, $X_n,X_{n+1},
-ldots, X_{n+m}$ will all have distributions approximately $\mu$. They won't be indepdendent, but
-if $m$ is also large, then we can still show that
-
-$$
-\sum_i f(i)\mu_i \approx \frac{1}{m+1} \sum_{k=0}^m f(X_k).
-$$
-
-So expectations, with respect to the distribution $\mu$ can be worked out this way. This often works well in
-practice, event though it is sometimes hard to get rigorous bounds on how large $n$ and $m$ must be for answers
-to be reliable.
-
 \vspace{10pt}
 
-The Markov chain $P$ is irreducible if $i\longrightarrow j$ $\forall i,j\in\mathcal{S}$. First, we must show
-that if $i\longrightarrow j$ under $Q$, then $i\longrightarrow j$ under $P$.
+For the chain $P$ to be irreducible, we must show that $\forall i,j\in\mathcal{S}$, 
+$i\longrightarrow j$. It is sufficient to show that if $i\longrightarrow j$ under $Q$,
+then $i\longrightarrow j$ under $P$. Suppose $i\longrightarrow j$ under $Q$.
+There are two cases to consider.\\
 
-There are 2 cases to consider:
+\textbf{Case 1:} If $\mu_j \geq \mu_i$ then we always accept the move and $p_{ij} = q_{ij}$,
+and since $Q$ is symmetric, $\exists n$ such $q_{ij}^{(n)} > 0$. Therefore
+$\forall i,j\in\mathcal{S}$ $i\longrightarrow j$.\\
 
-\begin{itemize}
-    \item If $u_j \geq u_i$ as $i\longrightarrow j$, then we always accept the move; the probability is always 1.
-\end{itemize}
+\textbf{Case 2:} If $\mu_j < \mu_i$ then $p_{ij} =  q_{ij}\frac{\mu_j}{\mu_i} > 0$, so
+$p_{ij} > 0$.\\
+
+Suppose that $\mu$ is not perfectly uniform, then w.l.g. there exists an $l,i\in\mathcal{S}$
+such that $\frac{\mu_l}{\mu_i} < 1$, and $p_{ii} > 0$. Then the period of state $i$ is 1, but
+since $P$ is irreducible, it has only one class, so the period of $P$ must be $\gcd\lbrace 1,\ldots\rbrace = 1$.
+So $P$ is aperiodic $\square$.
+
+\section*{Task 3}
+
+We propose the following method to define $Q$:\\
+
+Given a current state which is the tour $x=\begin{pmatrix} x_0 & x_1 & \cdots & x_{19} \end{pmatrix}$,
+randomly pick $i, j \in \left\lbrace 0, \ldots 19\right\rbrace$ such that $i'\neq j'$ and
+$i = \min(i',j'), j=\max( i, j)$. Define $T$ to be the transformation which swaps cities $i$ and $j$,
+ie.
+
+$$
+\begin{pmatrix} x_0 & \cdots & x_i & \cdots & x_j & \cdots x_{19}\end{pmatrix}
+\longrightarrow
+\begin{pmatrix} x_0 & \cdots & x_j & \cdots & x_i & \cdots x_{19}\end{pmatrix}
+$$
+
+If all resulting tours $x'$ are valid, then there are $\binom{20}{2}=190$ possible
+outcomes, so the probability $q_{ij}$ for $i\neq j$ is
+
+$$
+q_{ij} = \frac{1}{\binom{20}{2}} = \frac{1}{190}
+$$
+
+In the event that state $x_j$ is not valid due it containing a forbidden connection between two cities,
+we remain in state $x_i$. Suppose $f$ denotes the number of forbidden states that neighbor state
+$x_i$. Then the probability of remaining in state $x_i$ are
+
+$$
+q_{ii} = \frac{f}{\binom{20}{2}}.
+$$
+
+When a state $x_i$ has more forbidden neighbors, the probability of remaining in state $x_i$ increases
+proportionaly. The effect of this is that $q_{ij} = \frac{1}{190}$ for all $i,j\in \mathcal{S}$ where $K$ is a constant,
+and that implies
+
+$$
+q_{ij} = q_{ji}\quad\square.
+$$
+
+
+%The Markov chain $P$ is irreducible if $i\longrightarrow j$ $\forall i,j\in\mathcal{S}$. First, we must show
+%that if $i\longrightarrow j$ under $Q$, then $i\longrightarrow j$ under $P$.
+
+%There are 2 cases to consider:
+
+%\begin{itemize}
+%    \item If $u_j \geq u_i$ as $i\longrightarrow j$, then we always accept the move; 
+%        the probability is always 1. $p_{ij} = p{ji}$. This holds because if $q_{ij}$ is symmetric
+%        then $q_{ij}=q_{ji}$, then \exists
+%\end{itemize}
+
+
 
 \section{Results}
 
@@ -102,5 +180,7 @@ There are 2 cases to consider:
 \input{../src/table1-1}
     \end{tabular}
 \end{table}
+
+\lstinputlisting[language=Python]{../src/tour2.py}
 
 \end{document}

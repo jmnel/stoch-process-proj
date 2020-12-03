@@ -18,12 +18,19 @@ DATA_PATH = Path(__file__).absolute().parents[1] / 'data' / 'data.pkl'
 # random.seed(0)
 # np.random.seed(0)
 
+random.seed(0)
+
 n_cities = 20
 n_ban = 5
 pairs = {frozenset([i, j]) for i in range(n_cities) for j in range(i + 1, n_cities) if i != j}
 
 gamma = distributions.gamma(a=7.5)
 bans = random.sample(pairs, n_ban)
+
+print(bans)
+
+print({7, 13} in bans)
+exit()
 
 fig, ax = plt.subplots(1)
 
